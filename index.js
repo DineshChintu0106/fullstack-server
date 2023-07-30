@@ -5,6 +5,7 @@ const cors = require('cors')
 const app = express();
 
 
+
 app.use(cors())
 app.use(express.json())
 
@@ -32,9 +33,23 @@ app.get('/api', async (req, res) => {
     }
 });
 
+app.post('/api/data', async (req, res) => {
+    
+    try{
+        const receivedData = req.body; // This will contain the data sent from Angular
+        console.log(receivedData)
+        const collection = client.db('UserDetails').collection('UserManagement');
+        const restList = await collection.insertOne({"UserName":receivedData.username,"email":receivedData.email,
+        "password":receivedData.password,"Address":receivedData.address})
+        res.send(restList);}
+        catch(error){
+        console.log(error)
+        }
+    });
+
 app.post('/RestuarantList', async(req,res) =>{
     try{
-        const collection = client.db('Restaurants').collection('Barbeque Nation');
+        const collection = client.db('Restaurants').collection('RestaurantsList');
         const restList = await collection.insertOne({"Name":"Helapuri Restuarant",
         "Food items":[{"item":"Veg Fried rice","Favourites":false}, {"item":"Chicken Fried rice","Favourites":false}, {"item":"Chilli Chicken","Favourites":false}, {"item":"Chicken Manchurian","Favourites":false}],
         "Availability":true}
@@ -52,7 +67,7 @@ app.put('/updateList', async(req,res) =>{
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const restList = await collection.updateMany({
             "Name":"Cascades"},
-            {$set :{"Food items":[{"item":"Veg Fried rice","Favourites":false}, {"item":"Chicken Fried rice","Favourites":false}, {"item":"Chilli Chicken","Favourites":false}, {"item":"Chicken Manchurian","Favourites":false}] }}
+            {$set :{"Food items":[{"item":"Veg Fried rice","Favourites":false, "Cost":200}, {"item":"Chicken Fried rice","Favourites":false, "Cost":300}, {"item":"Chilli Chicken","Favourites":false, "Cost":250}, {"item":"Chicken Manchurian","Favourites":false, "Cost":200}] }}
         )
         res.send(restList)
         console.log(restList)
