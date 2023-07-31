@@ -40,7 +40,7 @@ app.post('/api/data', async (req, res) => {
         console.log(receivedData)
         const collection = client.db('UserDetails').collection('UserManagement');
         const restList = await collection.insertOne({"UserName":receivedData.username,"email":receivedData.email,
-        "password":receivedData.password,"Address":receivedData.address})
+        "password":receivedData.password,"Mobile":receivedData.number,"Address":receivedData.address})
         res.send(restList);}
         catch(error){
         console.log(error)
