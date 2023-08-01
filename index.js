@@ -53,8 +53,8 @@ app.post('/api/data', async (req, res) => {
         for(i=0; i<allData.length; i++){
         if(receivedData.username != allData[i].username && receivedData.email != allData[i].email && receivedData.mobile != allData[i].mobile){
         const collection = client.db('UserDetails').collection('UserManagement');
-        const restList = await collection.insertOne({"UserName":receivedData.username,"email":receivedData.email,
-        "password":receivedData.password,"Address":receivedData.address})
+        const restList = await collection.insertOne({"username":receivedData.username,"email":receivedData.email,
+        "password":receivedData.password,"mobile":receivedData.mobile, "address":receivedData.address})
         res.send(restList);}}}
         catch(error){
         console.log(error)
