@@ -34,59 +34,92 @@ app.get('/api', async (req, res) => {
 });
 
 app.post('/api/data', async (req, res) => {
-    
-    try{
+
+    try {
         const receivedData = req.body; // This will contain the data sent from Angular
         const collection1 = client.db('UserDetails').collection('UserManagement');
         const allData = await collection1.find({}).toArray();
         console.log(allData)
-        for(i=0; i<allData.length; i++){
-        if(receivedData.username == allData[i].username){
-            res.send("username already exists")
+        for (i = 0; i < allData.length; i++) {
+            if (receivedData.username == allData[i].username) {
+                res.send("username already exists")
+            }
+            else if (receivedData.email == allData[i].email) {
+                res.send("email already exists")
+            }
+            else if (receivedData.mobile == allData[i].mobile) {
+                res.send("mobile already exists")
+            }
         }
-        else if(receivedData.email == allData[i].email){
-            res.send("email already exists")
+        for (i = 0; i < allData.length; i++) {
+            if (receivedData.username != allData[i].username && receivedData.email != allData[i].email && receivedData.mobile != allData[i].mobile) {
+                const collection = client.db('UserDetails').collection('UserManagement');
+                const restList = await collection.insertOne({
+                    "username": receivedData.username, "email": receivedData.email,
+                    "password": receivedData.password, "mobile": receivedData.mobile, "address": receivedData.address
+                })
+                res.send(restList);
+            }
         }
-        else if(receivedData.mobile == allData[i].mobile){
-            res.send("mobile already exists")
-        }}
-        for(i=0; i<allData.length; i++){
-        if(receivedData.username != allData[i].username && receivedData.email != allData[i].email && receivedData.mobile != allData[i].mobile){
-        const collection = client.db('UserDetails').collection('UserManagement');
-        const restList = await collection.insertOne({"username":receivedData.username,"email":receivedData.email,
-        "password":receivedData.password,"mobile":receivedData.mobile, "address":receivedData.address})
-        res.send(restList);}}}
-        catch(error){
+    }
+    catch (error) {
         console.log(error)
-        }
-    });
+    }
+});
 
-app.post('/RestuarantList', async(req,res) =>{
-    try{
+app.post('/register', async (req, res) => {
+
+    try {
+        const receivedData = req.body; // This will contain the data sent from Angular
+        const collection1 = client.db('UserDetails').collection('UserManagement');
+        const allData = await collection1.find({ "mobile": receivedData.mobile }).toArray();
+        if (allData.length !== 0) {
+            collection1.insertOne({
+                "username": receivedData.username, "email": receivedData.email,
+                "password": receivedData.password, "mobile": receivedData.mobile, "address": receivedData.address
+            })
+            res.send("account created")
+        } else {
+            if (allData[0].mobile === receivedData.mobile) {
+                res.send("Mobile number already exists")
+            }
+        }
+
+    }
+    catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/RestuarantList', async (req, res) => {
+    try {
         const collection = client.db('Restaurants').collection('RestaurantsList');
-        const restList = await collection.insertOne({"Name":"Helapuri Restuarant",
-        "Food items":[{"item":"Veg Fried rice","Favourites":false}, {"item":"Chicken Fried rice","Favourites":false}, {"item":"Chilli Chicken","Favourites":false}, {"item":"Chicken Manchurian","Favourites":false}],
-        "Availability":true}
+        const restList = await collection.insertOne({
+            "Name": "Helapuri Restuarant",
+            "Food items": [{ "item": "Veg Fried rice", "Favourites": false }, { "item": "Chicken Fried rice", "Favourites": false }, { "item": "Chilli Chicken", "Favourites": false }, { "item": "Chicken Manchurian", "Favourites": false }],
+            "Availability": true
+        }
         )
         res.send(restList)
         console.log(restList)
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 });
 
-app.put('/updateList', async(req,res) =>{
-    try{
+app.put('/updateList', async (req, res) => {
+    try {
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const restList = await collection.updateMany({
-            "Name":"Cascades"},
-            {$set :{"Food items":[{"item":"Veg Fried rice","Favourites":false, "Cost":200}, {"item":"Chicken Fried rice","Favourites":false, "Cost":300}, {"item":"Chilli Chicken","Favourites":false, "Cost":250}, {"item":"Chicken Manchurian","Favourites":false, "Cost":200}] }}
+            "Name": "Cascades"
+        },
+            { $set: { "Food items": [{ "item": "Veg Fried rice", "Favourites": false, "Cost": 200 }, { "item": "Chicken Fried rice", "Favourites": false, "Cost": 300 }, { "item": "Chilli Chicken", "Favourites": false, "Cost": 250 }, { "item": "Chicken Manchurian", "Favourites": false, "Cost": 200 }] } }
         )
         res.send(restList)
         console.log(restList)
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 });
@@ -95,7 +128,7 @@ app.delete('/deleteList', async (req, res) => {
     try {
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const allData = await collection.deleteMany({
-            "name":"Alpha"
+            "name": "Alpha"
         });
 
         res.send(allData);
