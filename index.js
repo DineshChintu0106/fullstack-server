@@ -33,39 +33,7 @@ app.get('/api', async (req, res) => {
     }
 });
 
-app.post('/api/data', async (req, res) => {
 
-    try {
-        const receivedData = req.body; // This will contain the data sent from Angular
-        const collection1 = client.db('UserDetails').collection('UserManagement');
-        const allData = await collection1.find({}).toArray();
-        console.log(allData)
-        for (i = 0; i < allData.length; i++) {
-            if (receivedData.username == allData[i].username) {
-                res.send("username already exists")
-            }
-            else if (receivedData.email == allData[i].email) {
-                res.send("email already exists")
-            }
-            else if (receivedData.mobile == allData[i].mobile) {
-                res.send("mobile already exists")
-            }
-        }
-        for (i = 0; i < allData.length; i++) {
-            if (receivedData.username != allData[i].username && receivedData.email != allData[i].email && receivedData.mobile != allData[i].mobile) {
-                const collection = client.db('UserDetails').collection('UserManagement');
-                const restList = await collection.insertOne({
-                    "username": receivedData.username, "email": receivedData.email,
-                    "password": receivedData.password, "mobile": receivedData.mobile, "address": receivedData.address
-                })
-                res.send(restList);
-            }
-        }
-    }
-    catch (error) {
-        console.log(error)
-    }
-});
 
 app.post('/register', async (req, res) => {
 
