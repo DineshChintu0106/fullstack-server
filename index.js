@@ -40,17 +40,23 @@ app.post('/register', async (req, res) => {
     try {
         const receivedData = req.body; // This will contain the data sent from Angular
         const collection1 = client.db('UserDetails').collection('UserManagement');
-        const allData = await collection1.find({ "mobile": receivedData.mobile }).toArray();
-        if (allData.length !== 0) {
+        const allData = await collection1.find({ "$or": [{ "mobile": receivedData.mobile }, { "email": receivedData.email }] }).toArray();
+        if (allData.length == 0) {
             collection1.insertOne({
                 "username": receivedData.username, "email": receivedData.email,
-                "password": receivedData.password, "mobile": receivedData.mobile, "address": receivedData.address
+                "password": receivedData.password, "mobile": receivedData.mobile, "alt mobile": receivedData.altMobile,
+                "address": {
+                    "door no": receivedData.doorNo,
+                    "street": receivedData.street,
+                    "mandal": receivedData.mandal,
+                    "city": receivedData.city,
+                    "pincode": receivedData.pincode
+                }
             })
             res.send("account created")
         } else {
-            if (allData[0].mobile === receivedData.mobile) {
-                res.send("Mobile number already exists")
-            }
+            res.status(409)
+            res.send('email or mobile is already registered')
         }
 
     }
