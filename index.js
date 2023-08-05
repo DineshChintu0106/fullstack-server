@@ -51,7 +51,8 @@ app.post('/register', async (req, res) => {
                     "mandal": receivedData.mandal,
                     "city": receivedData.city,
                     "pincode": receivedData.pincode
-                }
+                },
+                "orders":[]
             })
             res.send("account created")
         } else {
