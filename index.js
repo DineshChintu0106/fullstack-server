@@ -33,7 +33,26 @@ app.get('/api', async (req, res) => {
     }
 });
 
+app.get('/login', async (req, res) => {
 
+    try {
+        const receivedData = req.body; // This will contain the data sent from Angular
+        const collection1 = client.db('UserDetails').collection('UserManagement');
+        const allData = await collection1.find({ "$or": [{ "mobile": receivedData.mobile }, { "email": receivedData.email }] }).toArray();
+        console.log(allData[0].mobile , receivedData.mobile)
+        if(allData[0].mobile == receivedData.mobile && allData[0].password == receivedData.password){
+            res.send("Login successfull")
+        }
+        else if(allData[0].email == receivedData.email && allData[0].password == receivedData.password){
+            res.send("Login successfull")
+        }
+        else{
+            res.send("Incorrect credentials")
+        }
+    }
+    catch(error){
+
+    }})
 
 app.post('/register', async (req, res) => {
 
