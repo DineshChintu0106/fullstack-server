@@ -33,7 +33,7 @@ app.get('/api', async (req, res) => {
     }
 });
 
-app.get('/login', async (req, res) => {
+app.post('/login', async (req, res) => {
 
     try {
         const receivedData = req.body; // This will contain the data sent from Angular
