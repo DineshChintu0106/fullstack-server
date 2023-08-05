@@ -37,9 +37,10 @@ app.get('/login', async (req, res) => {
 
     try {
         const receivedData = req.body; // This will contain the data sent from Angular
+        console.log(receivedData)
         const collection1 = client.db('UserDetails').collection('UserManagement');
-        const allData = await collection1.find({ "$or": [{ "mobile": receivedData.mobile }, { "email": receivedData.email }] }).toArray();
-        console.log(allData[0].mobile , receivedData.mobile)
+        const allData = await collection1.find({ "$or": [{ "mobile": receivedData.mobile }, { "email": receivedData.mobile }] }).toArray();
+        console.log(allData)
         if(allData[0].mobile == receivedData.mobile && allData[0].password == receivedData.password){
             res.send("Login successfull")
         }
