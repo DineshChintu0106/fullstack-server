@@ -39,21 +39,27 @@ app.post('/login', async (req, res) => {
         const receivedData = req.body; // This will contain the data sent from Angular
         console.log(receivedData)
         const collection1 = client.db('UserDetails').collection('UserManagement');
-        const allData = await collection1.find({ "$or": [{ "mobile": receivedData.mobile }, { "email": receivedData.mobile }] }).toArray();
+        const allData = await collection1.find({ "$or": [{ "mobile": receivedData.mobile }, { "email": receivedData.mobile },{"password":receivedData.password}] }).toArray();
         console.log(allData)
-        if(allData[0].mobile == receivedData.mobile && allData[0].password == receivedData.password){
-            res.send("Login successfull")
+        if (allData.length > 0) {
+            if (allData[0].mobile == receivedData.mobile || allData[0].email === receivedData.mobile) {
+                if (allData[0].password === receivedData.password) {
+                    res.send("Login successfull")
+                } else {
+                    res.status(403).json({ message: 'Incorrect passoword' })
+                }
+            }else{
+                res.status(403).json({message:"Incorrect Email or Mobile"})
+            }
         }
-        else if(allData[0].email == receivedData.email && allData[0].password == receivedData.password){
-            res.send("Login successfull")
-        }
-        else{
-            res.send("Incorrect credentials")
+        else {
+            res.status(403).json({ message: 'No user Found' })
         }
     }
-    catch(error){
-
-    }})
+    catch (error) {
+        console.log(error)
+    }
+})
 
 app.post('/register', async (req, res) => {
 
@@ -72,7 +78,7 @@ app.post('/register', async (req, res) => {
                     "city": receivedData.city,
                     "pincode": receivedData.pincode
                 },
-                "orders":[]
+                "orders": []
             })
             res.send("account created")
         } else {
