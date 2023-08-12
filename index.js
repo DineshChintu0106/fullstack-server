@@ -35,13 +35,13 @@ app.get('/api', async (req, res) => {
     }
 });
 
-app.post('/fetchDetails', async (req, res) => {
+app.get(`/fetchDetails/:id`, async (req, res) => {
+    const {id} = req.params
+    console.log(id)
     try {
-        let receivedData = new ObjectId(req.query.id)  
+        let receivedData = new ObjectId(id)  
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const allData = await collection.find({"_id" : receivedData}).toArray();
-        console.log({"_id" : receivedData })
-
         res.send(allData);
     } catch (error) {
         console.error('Error retrieving data:', error);
