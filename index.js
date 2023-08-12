@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 // const {PORT}  = require('dotenv')
 const cors = require('cors')
 const app = express();
+const jwt = require('jsonwebtoken')
 
 
 
@@ -44,7 +45,9 @@ app.post('/login', async (req, res) => {
         if (allData.length > 0) {
             if (allData[0].mobile == receivedData.mobile || allData[0].email === receivedData.mobile) {
                 if (allData[0].password === receivedData.password) {
-                    res.send("Login successfull")
+                    let data = receivedData.mobile
+                    let token = jwt.sign(data, 'myToken')
+                    res.send(token)
                 } else {
                     res.status(403).json({ message: 'Incorrect passoword' })
                 }
