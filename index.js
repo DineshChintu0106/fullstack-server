@@ -34,6 +34,21 @@ app.get('/api', async (req, res) => {
     }
 });
 
+app.post('/fetchDetails', async (req, res) => {
+    try {
+        let receivedData = "ObjectId('"+req.query.id+"')"
+        //let receivedData = req.query.id
+        const collection = client.db('Restaurants').collection('RestaurantsList');
+        const allData = await collection.find({"_id" : receivedData}).toArray();
+        console.log({"_id" : receivedData })
+
+        res.send(allData);
+    } catch (error) {
+        console.error('Error retrieving data:', error);
+        res.status(500).json({ error: 'Error retrieving data' });
+    }
+});
+
 app.post('/login', async (req, res) => {
 
     try {
