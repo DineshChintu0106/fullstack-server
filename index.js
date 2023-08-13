@@ -42,7 +42,7 @@ app.get(`/fetchDetails/:id`, async (req, res) => {
         let receivedData = new ObjectId(id)  
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const allData = await collection.find({"_id" : receivedData}).toArray();
-        res.send(allData);
+        res.send(allData[0]._id);
     } catch (error) {
         console.error('Error retrieving data:', error);
         res.status(500).json({ error: 'Error retrieving data' });
@@ -137,6 +137,24 @@ app.put('/updateList', async (req, res) => {
         )
         res.send(restList)
         console.log(restList)
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+
+app.put('/updateOrder', async (req, res) => {
+    try {
+        let receivedData = req.body
+        const collection = client.db('UserDetails').collection('UserManagement');
+        console.log(receivedData.orders)
+        let receivedData1 = new ObjectId(receivedData.id)
+        const restList = await collection.updateOne({
+            "_id": receivedData1
+        },
+            { $push: { "orders": receivedData.orders } }
+        )
+        res.send(restList)
     }
     catch (error) {
         console.log(error);
