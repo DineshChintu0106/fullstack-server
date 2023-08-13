@@ -37,7 +37,6 @@ app.get('/api', async (req, res) => {
 
 app.get(`/fetchDetails/:id`, async (req, res) => {
     const {id} = req.params
-    console.log(id)
     try {
         let receivedData = new ObjectId(id)  
         const collection = client.db('Restaurants').collection('RestaurantsList');
@@ -62,7 +61,7 @@ app.post('/login', async (req, res) => {
                 if (allData[0].password === receivedData.password) {
                     let data = receivedData.mobile
                     let token = jwt.sign(data, 'myToken')
-                    res.send(token)
+                    res.send({token:token,allData})
                 } else {
                     res.status(403).json({ message: 'Incorrect passoword' })
                 }
