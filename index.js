@@ -160,6 +160,25 @@ app.put('/updateOrder', async (req, res) => {
     }
 });
 
+app.put('/addToCart', async (req, res) => {
+    try {
+        let receivedData = req.body
+        const collection = client.db('UserDetails').collection('UserManagement');
+        console.log(receivedData.orders)
+        let receivedData1 = new ObjectId(receivedData.id)
+        receivedData.orders.map(async (w) => {
+        const restList = await collection.updateOne({
+            "_id": receivedData1
+        },
+            { $push: { "orders": w } }
+        )})
+        res.send("success")
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+
 app.delete('/deleteList', async (req, res) => {
     try {
         const collection = client.db('Restaurants').collection('RestaurantsList');
