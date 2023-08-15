@@ -41,7 +41,7 @@ app.get(`/fetchDetails/:id`, async (req, res) => {
         let receivedData = new ObjectId(id)  
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const allData = await collection.find({"_id" : receivedData}).toArray();
-        res.send(allData[0]._id);
+        res.send(allData[0]);
     } catch (error) {
         console.error('Error retrieving data:', error);
         res.status(500).json({ error: 'Error retrieving data' });
