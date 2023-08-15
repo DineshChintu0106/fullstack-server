@@ -3,8 +3,7 @@ const { MongoClient } = require('mongodb');
 // const {PORT}  = require('dotenv')
 const cors = require('cors')
 const app = express();
-const jwt = require('jsonwebtoken')
-const {ObjectId} = require('mongodb')
+
 
 
 
