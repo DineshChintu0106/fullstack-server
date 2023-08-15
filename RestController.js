@@ -19,12 +19,13 @@ exports.getData = async(req, res) => {
 };
 
 exports.getId = async (req, res) => {
-    const {id} = req.params
     try {
+        const {id} = req.params
         let receivedData = new ObjectId(id)  
+        console.log(receivedData)
         const collection = client.db('Restaurants').collection('RestaurantsList');
         const allData = await collection.find({"_id" : receivedData}).toArray();
-        res.send(allData[0]._id);
+        res.send(allData);
     } catch (error) {
         console.error('Error retrieving data:', error);
         res.status(500).json({ error: 'Error retrieving data' });
