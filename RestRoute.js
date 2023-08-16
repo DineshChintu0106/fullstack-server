@@ -8,6 +8,8 @@ module.exports = (app) =>{
 
     app.get("/getCart/:id", RestController.getCart);
 
+    app.get("/getProfile/:id", RestController.getProfile);
+
     app.post("/login", RestController.login);
 
     app.post("/register", RestController.register);

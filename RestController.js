@@ -47,6 +47,21 @@ exports.getCart = async (req, res) => {
     }
 };
 
+exports.getProfile = async (req, res) => {
+    try {
+        const {id} = req.params
+        let receivedData = new ObjectId(id)  
+        console.log(receivedData)
+        const collection = client.db('UserDetails').collection('UserManagement');
+        const allData = await collection.find({"_id" : receivedData}).toArray();
+        console.log(allData)
+        res.send(allData[0]);
+    } catch (error) {
+        console.error('Error retrieving data:', error);
+        res.status(500).json({ error: 'Error retrieving data' });
+    }
+};
+
 exports.login = async (req, res) => {
 
     try {
