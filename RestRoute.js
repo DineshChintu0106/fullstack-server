@@ -6,6 +6,8 @@ module.exports = (app) =>{
 
     app.get("/fetchDetails/:id", RestController.getId);
 
+    app.get("/getCart/:id", RestController.getCart);
+
     app.post("/login", RestController.login);
 
     app.post("/register", RestController.register);
