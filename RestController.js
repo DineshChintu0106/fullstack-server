@@ -39,7 +39,7 @@ exports.getCart = async (req, res) => {
         console.log(receivedData)
         const collection = client.db('UserDetails').collection('UserManagement');
         const allData = await collection.find({"_id" : receivedData}).toArray();
-        let send =allData[0].orders.filter(w => {return w.orderStatus == false
+        let send =allData[0].orders.filter(w => {return w.activeOrder == false
         })
         res.send(send);
     } catch (error) {
