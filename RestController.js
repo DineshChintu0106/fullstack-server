@@ -207,3 +207,23 @@ exports.deleteList =  async (req, res) => {
         res.status(500).json({ error: 'Error retrieving data' });
     }
 };
+
+exports.deleteitem =  async (req, res) => {
+    try {
+        let receivedData = req.body
+        let receivedData1 = new ObjectId(receivedData.id)
+        const collection = client.db('UserDetails').collection('UserManagement');
+        const allData1 = await collection.find({"_id":receivedData1}).toArray();
+        let sky = allData1[0].orders
+        
+        const allData = await collection.updateOne(
+            {"_id":receivedData1},
+             {$pull: {"orders" : {"cartId" : receivedData.cartId}}}
+        );
+
+        res.send("deleted")
+    } catch (error) {
+        console.error('Error retrieving data:', error);
+        res.status(500).json({ error: 'Error retrieving data' });
+    }
+};

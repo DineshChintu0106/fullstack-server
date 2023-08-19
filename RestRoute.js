@@ -23,4 +23,6 @@ module.exports = (app) =>{
     app.put("/addToCart", RestController.addToCart);
 
     app.delete("/deleteList", RestController.deleteList);
+
+    app.post("/deleteitem", RestController.deleteitem);
 }
