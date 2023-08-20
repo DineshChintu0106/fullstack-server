@@ -18,6 +18,19 @@ exports.getData = async(req, res) => {
     }
 };
 
+exports.getplaceorder = async(req, res) => {
+    try {
+        const {id} = req.params
+        let receivedData = new ObjectId(id)  
+        const collection = client.db('UserDetails').collection('UserManagement');
+        const allData = await collection.find({"_id":receivedData}).toArray();
+        res.send(allData[0].myorders);
+    } catch (error) {
+        console.error('Error retrieving data:', error);
+        res.status(500).json({ error: 'Error retrieving data' });
+    }
+};
+
 exports.getId = async (req, res) => {
     try {
         const {id} = req.params
