@@ -25,4 +25,6 @@ module.exports = (app) =>{
     app.delete("/deleteList", RestController.deleteList);
 
     app.post("/deleteitem", RestController.deleteitem);
+
+    app.post("/placeorder", RestController.placeorder);
 }
