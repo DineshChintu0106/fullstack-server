@@ -60,7 +60,8 @@ exports.getProfile = async (req, res) => {
         console.log(receivedData)
         const collection = client.db('UserDetails').collection('UserManagement');
         const allData = await collection.find({"_id" : receivedData}).toArray();
-        console.log(allData)
+        console.log(allData[0])
+        delete allData[0].password
         res.send(allData[0]);
     } catch (error) {
         console.error('Error retrieving data:', error);
