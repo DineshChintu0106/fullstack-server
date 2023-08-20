@@ -41,7 +41,12 @@ exports.getCart = async (req, res) => {
         const allData = await collection.find({"_id" : receivedData}).toArray();
         let send =allData[0].orders.filter(w => {return w.activeOrder == false
         })
-        res.send(send);
+        let data = {
+            address:allData[0].address,
+            mobile:allData[0].mobile,
+            cart:send
+        }
+        res.send(data);
     } catch (error) {
         console.error('Error retrieving data:', error);
         res.status(500).json({ error: 'Error retrieving data' });
