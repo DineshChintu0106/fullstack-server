@@ -232,3 +232,22 @@ exports.deleteitem =  async (req, res) => {
         res.status(500).json({ error: 'Error retrieving data' });
     }
 };
+
+exports.placeorder = async(req,res) => {
+    try{
+        let receivedData = req.body
+        let receivedData1 = new ObjectId(receivedData.id)
+        const collection = client.db('UserDetails').collection('UserManagement');
+        console.log(receivedData.orders.orderId)
+        const restList = await collection.updateOne({
+            "_id": receivedData1
+        },
+            { $push: { "myorders": receivedData.orders } }
+        )
+            res.send(restList)
+    }
+    catch(error){
+        console.error('Error retrieving data:', error);
+        res.status(500).json({ error: 'Error retrieving data' });
+    }
+}
