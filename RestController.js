@@ -259,6 +259,8 @@ exports.placeorder = async(req,res) => {
             { $push: { "myorders": receivedData } }
         )
             res.send(restList)
+        const allData = await collection.updateOne({"_id":receivedData1},
+        {$pull : {"orders":{} }})
     }
     catch(error){
         console.error('Error retrieving data:', error);
