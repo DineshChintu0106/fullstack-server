@@ -123,7 +123,7 @@ exports.register = async (req, res) => {
                 "username": receivedData.username, "email": receivedData.email,
                 "password": receivedData.password, "mobile": receivedData.mobile, "alt mobile": receivedData.altMobile,
                 "address": {
-                    "door no": receivedData.doorNo,
+                    "doorNo": receivedData.doorNo,
                     "street": receivedData.street,
                     "mandal": receivedData.mandal,
                     "city": receivedData.city,
