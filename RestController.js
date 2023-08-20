@@ -256,7 +256,7 @@ exports.placeorder = async(req,res) => {
         const restList = await collection.updateOne({
             "_id": receivedData1
         },
-            { $push: { "myorders": receivedData.orders } }
+            { $push: { "myorders": receivedData } }
         )
             res.send(restList)
     }
