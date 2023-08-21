@@ -129,7 +129,8 @@ exports.register = async (req, res) => {
                     "city": receivedData.city,
                     "pincode": receivedData.pincode
                 },
-                "orders": []
+                "orders": [],
+                "myorders":[]
             })
             res.send("account created")
         } else {
